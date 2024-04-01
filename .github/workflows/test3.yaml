@@ -1,0 +1,31 @@
+name: Lab 3
+on:
+  issues:
+    types:
+      - closed
+  pull_request:
+    types:
+      - opened
+jobs:
+  labelAndCommentIssues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Comment on closed issue
+        if: github.event_name == 'issues' && github.event.action == 'closed'
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            The issue is now resolved. Hieno homma! /tt
+  congratulateOnFirstPullRequest:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 1
+    steps:
+      - name: Congratulate on first pull request
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Congratulations on opening your first pull request. Hieno homma! /tt
