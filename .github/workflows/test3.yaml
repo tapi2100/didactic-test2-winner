@@ -9,8 +9,8 @@ on:
 jobs:
   labelAndCommentIssues:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Comment on closed issue
         if: github.event_name == 'issues' && github.event.action == 'closed'
@@ -19,6 +19,7 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             The issue is now resolved. Hieno homma! /tt
+
   congratulateOnFirstPullRequest:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.number == 1
